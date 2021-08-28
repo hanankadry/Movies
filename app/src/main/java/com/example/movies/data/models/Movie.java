@@ -4,7 +4,7 @@ import com.squareup.moshi.Json;
 
 import java.io.Serializable;
 
-public class Movie implements Serializable {
+public class Movie{
     private int id;
     @Json(name = "poster_path")
     private String posterPath;
