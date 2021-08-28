@@ -6,10 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavAction;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import com.example.movies.data.adapter.MovieAdapter;
 import com.example.movies.data.models.Movie;
 import com.example.movies.data.models.MovieResponse;
 import com.example.movies.data.service.MovieAPI;
-import com.example.movies.databinding.FragmentMovieDetailsBindingImpl;
 import com.example.movies.databinding.FragmentMovieListBinding;
 
 import java.util.List;
