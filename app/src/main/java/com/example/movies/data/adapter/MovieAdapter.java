@@ -46,7 +46,7 @@ public class MovieAdapter extends ListAdapter<Movie, MovieAdapter.MovieViewHolde
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = getItem(position);
-        holder.bind(movie, listener);
+        holder.bind(movie);
     }
 
 
@@ -58,7 +58,7 @@ public class MovieAdapter extends ListAdapter<Movie, MovieAdapter.MovieViewHolde
             this.binding = binding;
         }
 
-        public void bind(Movie movie, OnClickListener listener) {
+        public void bind(Movie movie) {
             final String IMAGE_BASE_URL="https://image.tmdb.org/t/p/w500";
 
             binding.movieName.setText(movie.getTitle());
