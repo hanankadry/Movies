@@ -1,12 +1,18 @@
 package com.example.movies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +21,10 @@ import com.example.movies.data.models.Movie;
 import com.example.movies.data.models.MovieResponse;
 import com.example.movies.data.retrofit.service.MovieAPI;
 import com.example.movies.databinding.ActivityMainBinding;
+import com.example.movies.service.MyFirebaseMessagingService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -24,11 +34,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnClickListener {
     private ActivityMainBinding binding;
     private MainViewModel mainViewModel;
     private MovieAdapter adapter;
-    private List<Movie> list;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
         initViewModel();
         setUpRecycler();
         initObservers();
+        initBroadcastReceiver();
     }
 
     private void setUpRecycler() {
@@ -59,6 +72,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         });
 
+    }
+    private void initBroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                binding.refreshBtn.setVisibility(View.VISIBLE);
+                binding.refreshBtn.setOnClickListener(view -> {
+                    binding.refreshBtn.setVisibility(View.GONE);
+                    Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(refresh);
+                    overridePendingTransition(0, 0);
+                });
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(broadcastReceiver, new IntentFilter("refresh_movies"));
     }
 
     @Override

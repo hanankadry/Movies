@@ -2,8 +2,15 @@ package com.example.movies;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.movies.data.models.Movie;
@@ -15,12 +22,15 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MovieDetailsActivity extends AppCompatActivity {
-    ActivityMovieDetailsBinding binding;
+    private ActivityMovieDetailsBinding binding;
+    private BroadcastReceiver broadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
+        initBroadcastReceiver();
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
 
         if (movie != null) {
@@ -43,5 +53,17 @@ public class MovieDetailsActivity extends AppCompatActivity {
             binding.voteCount.setText(Integer.toString(movie.getVoteCount()));
             binding.releaseDate.setText(outputDate);
         }
+    }
+    private void initBroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String msg = intent.getExtras().getString("gcm.notification.title");
+                Log.d("notifications_practice", "onReceive: "+ msg);
+                Toast.makeText(MovieDetailsActivity.this, "onReceive: "+ msg, Toast.LENGTH_SHORT).show();
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(broadcastReceiver, new IntentFilter("movie_details"));
     }
 }
