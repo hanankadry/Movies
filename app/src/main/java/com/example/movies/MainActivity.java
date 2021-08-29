@@ -1,5 +1,6 @@
 package com.example.movies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +17,9 @@ import com.example.movies.data.models.Movie;
 import com.example.movies.data.models.MovieResponse;
 import com.example.movies.data.retrofit.service.MovieAPI;
 import com.example.movies.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
     private MainViewModel mainViewModel;
     private MovieAdapter adapter;
     private List<Movie> list;
+    private static final String TAG = "Lecture6";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
         initViewModel();
         setUpRecycler();
         initObservers();
+        initializeNotifications();
+    }
+
+    private void initializeNotifications() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    String token = task.getResult();
+
+                    Log.d(TAG, "token = " + token);
+                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void setUpRecycler() {
