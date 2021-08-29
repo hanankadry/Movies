@@ -1,62 +1,33 @@
 {
   "project_info": {
-    "project_number": "261278746345",
-    "project_id": "notifications-76e9d",
-    "storage_bucket": "notifications-76e9d.appspot.com"
+    "project_number": "684865495787",
+    "project_id": "movies-be8bc",
+    "storage_bucket": "movies-be8bc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:261278746345:android:608f04972315e6e827d278",
+        "mobilesdk_app_id": "1:684865495787:android:b3a008bf273694735054ae",
         "android_client_info": {
           "package_name": "com.example.movies"
         }
       },
       "oauth_client": [
         {
-          "client_id": "261278746345-bst3mj74jo2krjus3rl2pks4gj8d00ia.apps.googleusercontent.com",
+          "client_id": "684865495787-2qpluuv0qss9qt75dem84kuuvved4ohb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDg84CaJ6bPFL4VS92HAe0ByxvEdvlMiqI"
+          "current_key": "AIzaSyBHlsAyQeiIicNweVAOMQQAWPlzY-ItxQY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "261278746345-bst3mj74jo2krjus3rl2pks4gj8d00ia.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:261278746345:android:528ad4a8f8bcace827d278",
-        "android_client_info": {
-          "package_name": "com.example.notifications"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "261278746345-bst3mj74jo2krjus3rl2pks4gj8d00ia.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDg84CaJ6bPFL4VS92HAe0ByxvEdvlMiqI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "261278746345-bst3mj74jo2krjus3rl2pks4gj8d00ia.apps.googleusercontent.com",
+              "client_id": "684865495787-2qpluuv0qss9qt75dem84kuuvved4ohb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

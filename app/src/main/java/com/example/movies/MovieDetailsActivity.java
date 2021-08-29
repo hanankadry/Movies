@@ -21,7 +21,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
-        Movie movie = (Movie) getIntent().getSerializableExtra("movie");
+        Movie movie = (Movie) getIntent().getSerializableExtra("MOVIE");
 
         if (movie != null) {
             final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";

@@ -25,7 +25,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private final String NOTIFICATION_CHANNEL_ID = "notifications";
-    private LocalBroadcastManager broadcastManager;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -34,13 +33,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = remoteMessage.toIntent();
         intent.setAction(remoteMessage.getNotification().getClickAction());
         notificationSettings(intent);
-        broadcastManager.sendBroadcast(intent);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        broadcastManager = LocalBroadcastManager.getInstance(this);
     }
 
     private void notificationSettings(Intent intent) {

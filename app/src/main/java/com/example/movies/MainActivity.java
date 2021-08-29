@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
     private MainViewModel mainViewModel;
     private MovieAdapter adapter;
     private List<Movie> list;
-    private static final String TAG = "Lecture6";
+    private static final String TAG = "Test Run";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
                     String token = task.getResult();
 
                     Log.d(TAG, "token = " + token);
-                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
     @Override
     public void onMovieClicked(Movie movie) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("movie", movie);
+        intent.putExtra("MOVIE", movie);
         startActivity(intent);
     }
 }
