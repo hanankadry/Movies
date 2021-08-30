@@ -58,9 +58,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String msg = intent.getExtras().getString("gcm.notification.title");
-                Log.d("notifications_practice", "onReceive: "+ msg);
-                Toast.makeText(MovieDetailsActivity.this, "onReceive: "+ msg, Toast.LENGTH_SHORT).show();
             }
         };
         LocalBroadcastManager.getInstance(this)

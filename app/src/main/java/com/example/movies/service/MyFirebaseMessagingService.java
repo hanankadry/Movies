@@ -30,7 +30,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d("Lecture6", "onMessageReceived: " + remoteMessage.getNotification().getTitle());
         Intent intent = remoteMessage.toIntent();
         intent.setAction(remoteMessage.getNotification().getClickAction());
         notificationSettings(intent);
@@ -63,7 +62,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationChannel.setLightColor(Color.BLUE);
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        Intent pushIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
+        Intent pushIntent = new Intent(getApplicationContext(), MainActivity.class);
         pushIntent.putExtras(extras);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this,0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
