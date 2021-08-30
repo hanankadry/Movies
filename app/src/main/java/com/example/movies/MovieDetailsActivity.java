@@ -30,8 +30,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
-        initBroadcastReceiver();
-        Movie movie = (Movie) getIntent().getSerializableExtra("movie");
+        initObservers();
+    }
+
+    private void initObservers(){
+        Movie movie = (Movie) getIntent().getSerializableExtra("MOVIE");
 
         if (movie != null) {
             final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
@@ -53,6 +56,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             binding.voteCount.setText(Integer.toString(movie.getVoteCount()));
             binding.releaseDate.setText(outputDate);
         }
+
     }
     private void initBroadcastReceiver() {
         broadcastReceiver = new BroadcastReceiver() {
@@ -63,4 +67,5 @@ public class MovieDetailsActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver, new IntentFilter("movie_details"));
     }
+
 }

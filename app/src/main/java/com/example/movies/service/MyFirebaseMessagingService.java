@@ -14,18 +14,21 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationChannelCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.movies.MainActivity;
+import com.example.movies.MainViewModel;
 import com.example.movies.MovieDetailsActivity;
 import com.example.movies.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private final String NOTIFICATION_CHANNEL_ID = "notifications_demo";
-    LocalBroadcastManager broadcastManager;
+    private final String NOTIFICATION_CHANNEL_ID = "notifications";
+    private LocalBroadcastManager broadcastManager;
+    private String NOTIFICATION_GROUP = "com.example.string.NOTIFICATION_GROUP";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -57,28 +60,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     "notification",
                     NotificationManager.IMPORTANCE_HIGH
             );
-            notificationChannel.setDescription("Lecture channel");
+            notificationChannel.setDescription("MOVIES_CHANNEL");
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.BLUE);
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        Intent pushIntent = new Intent(getApplicationContext(), MainActivity.class);
-        pushIntent.putExtras(extras);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this,0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //main activity button intent
+        Intent refreshIntent = new Intent(getApplicationContext(), MainViewModel.class);
+        refreshIntent.putExtras(extras);
+        PendingIntent refreshPendingIntent =
+                PendingIntent.getActivity(this, 0, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //movie list activity intent
+        /**Intent movieListIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
+        movieListIntent.putExtras(extras);
+        PendingIntent listPendingIntent = PendingIntent.getActivity(this, 1, movieListIntent, PendingIntent.FLAG_UPDATE_CURRENT);*/
 
-        NotificationCompat.Builder builder = new NotificationCompat
-                .Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setOngoing(false)
-                .setAutoCancel(true)
-                .setContentTitle(title)
-                .setContentText(body)
-                .setSound(defaultSound)
-                .setContentIntent(pendingIntent);
-
-        notificationManager.notify(0, builder.build());
+        NotificationCompat.Builder mainActivityNotifier =
+                new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setAutoCancel(true)
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setSound(defaultSound)
+                        .setContentIntent(refreshPendingIntent)
+                        .setGroup(NOTIFICATION_GROUP);
+        /**NotificationCompat.Builder movieListNotifier =
+                new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setSound(defaultSound)
+                        .setContentIntent(listPendingIntent)
+                        .setGroup(NOTIFICATION_GROUP);*/
+        notificationManager.notify(0, mainActivityNotifier.build());
+//        notificationManager.notify(1, movieListNotifier.build());
     }
 }

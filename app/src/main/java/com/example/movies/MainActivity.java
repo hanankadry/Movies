@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
     @Override
     public void onMovieClicked(Movie movie) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("movie", movie);
+        intent.putExtra("MOVIE", movie);
         startActivity(intent);
     }
 }

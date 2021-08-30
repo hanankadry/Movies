@@ -26,7 +26,7 @@ public class MainViewModel extends ViewModel {
                 RetrofitService
                         .movieApi()
                         .getMoviesListFromNetwork();
-        //enqueue for background thread
+
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
