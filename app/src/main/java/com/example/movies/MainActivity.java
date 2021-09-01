@@ -1,6 +1,5 @@
 package com.example.movies;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,29 +11,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.movies.data.adapter.MovieAdapter;
 import com.example.movies.data.models.Movie;
-import com.example.movies.data.models.MovieResponse;
-import com.example.movies.data.retrofit.service.MovieAPI;
 import com.example.movies.databinding.ActivityMainBinding;
-import com.example.movies.service.MyFirebaseMessagingService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
-
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnClickListener {
     private ActivityMainBinding binding;
@@ -73,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
         });
 
     }
+
     private void initBroadcastReceiver() {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -92,10 +75,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnCl
                 .registerReceiver(broadcastReceiver, new IntentFilter("refresh_movies"));
     }
 
+
     @Override
     public void onMovieClicked(Movie movie) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("MOVIE", movie);
+        intent.putExtra("movie", movie);
         startActivity(intent);
     }
 }

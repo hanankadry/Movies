@@ -4,36 +4,29 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.movies.data.models.Movie;
-import com.example.movies.data.models.MovieResponse;
 import com.example.movies.data.retrofit.service.RetrofitService;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+public class MovieDetailsViewModel extends ViewModel {
 
-public class MainViewModel extends ViewModel {
-    public MutableLiveData<List<Movie>> moviesMutableLiveData = new MutableLiveData();
+    public MutableLiveData<Movie> movieMutableLiveData = new MutableLiveData();
     public MutableLiveData<String> errorMutableLiveData = new MutableLiveData();
 
-    public MainViewModel() {
-        getData();
-    }
-
-    private void getData(){
-        Call<MovieResponse> call =
+    public void getMovieDetails(int movieId) {
+        Call<Movie> call =
                 RetrofitService
                         .movieApi()
-                        .getMoviesListFromNetwork();
+                        .getMovieDetails(movieId);
 
-        call.enqueue(new Callback<MovieResponse>() {
+        call.enqueue(new Callback<Movie>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()){
-                    List<Movie> list = response.body().getResults();
-                    moviesMutableLiveData.postValue(list);
+                    Movie movie = response.body();
+                    movieMutableLiveData.postValue(movie);
                 } else {
                     errorMutableLiveData.postValue("User not authorized");
                 }
@@ -41,11 +34,11 @@ public class MainViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(Call<Movie> call, Throwable t) {
                 errorMutableLiveData.postValue(t.getMessage());
             }
         });
 
-    }
 
+    }
 }

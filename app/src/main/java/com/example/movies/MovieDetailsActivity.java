@@ -2,6 +2,8 @@ package com.example.movies;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.BroadcastReceiver;
@@ -9,7 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -24,17 +26,32 @@ import java.util.Locale;
 public class MovieDetailsActivity extends AppCompatActivity {
     private ActivityMovieDetailsBinding binding;
     private BroadcastReceiver broadcastReceiver;
-
+    private MovieDetailsViewModel movieDetailsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
-        initObservers();
+        initViewModel();
+        initObserver();
+
+        Movie movie = (Movie) getIntent().getSerializableExtra("movie");
+        setMovieData(movie);
     }
 
-    private void initObservers(){
-        Movie movie = (Movie) getIntent().getSerializableExtra("MOVIE");
+    private void initViewModel() {
+        movieDetailsViewModel = new ViewModelProvider(this).get(MovieDetailsViewModel.class);
+    }
+
+    private void initObserver() {
+        movieDetailsViewModel.movieMutableLiveData.observe(this, this::setMovieData);
+
+        movieDetailsViewModel.errorMutableLiveData.observe(this,
+                msg -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+    }
+
+    private void setMovieData(Movie movie) {
+        initBroadcastReceiver(movie);
 
         if (movie != null) {
             final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
@@ -56,14 +73,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
             binding.voteCount.setText(Integer.toString(movie.getVoteCount()));
             binding.releaseDate.setText(outputDate);
         }
-
     }
-    private void initBroadcastReceiver() {
+
+    private void initBroadcastReceiver(Movie movie) {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Bundle extras = intent.getExtras();
+                if (movie.getId() == Integer.parseInt(extras.getString("action_id"))) {
+                    binding.layout.setVisibility(View.GONE);
+                    binding.layout.postDelayed(() -> binding.layout.setVisibility(View.VISIBLE), 2000);
+                } else {
+                    movieDetailsViewModel.getMovieDetails(Integer.parseInt(extras.getString("action_id")));
+                }
             }
         };
+
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver, new IntentFilter("movie_details"));
     }
